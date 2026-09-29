@@ -1,0 +1,8 @@
+{
+ "MultiStageSampler": {
+  "display_name": "Multi-Stage Sampler"
+ },
+ "MultiStageLoraStack": {
+  "display_name": "Multi-Stage LoRA Stack"
+ }
+}

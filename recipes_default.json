@@ -1,0 +1,137 @@
+{
+ "default": "Fast · copy 4 + fast 3",
+ "recipes": [
+  {
+   "name": "Fast · copy 4 + fast 3",
+   "note": "QI2.1 NVFP4 + Viggle turbo r128, bench qi21_v2: 6.6s, LPIPS 0.073 (worst 0.131), sharpness 0.94",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      4
+     ]
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.667,
+      0.4,
+      0
+     ],
+     "lora": 0.95
+    }
+   ]
+  },
+  {
+   "name": "Balanced · copy 5 + fast 3",
+   "note": "bench qi21_v2: 7.7s, LPIPS 0.058 (worst 0.096), sharpness 0.95",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      5
+     ]
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.667,
+      0.4,
+      0
+     ],
+     "lora": 0.93
+    }
+   ]
+  },
+  {
+   "name": "Fine · copy 6 + fast 3",
+   "note": "bench qi21_v2: 8.5s, LPIPS 0.049 (worst 0.092), sharpness 1.01",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      6
+     ]
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.667,
+      0.4,
+      0
+     ],
+     "lora": 0.93
+    }
+   ]
+  },
+  {
+   "name": "Text · balanced + refine (.25, cfg 3)",
+   "note": "For images with lettering: balanced, then renoise to σ 0.25 and finish with 3 base steps at cfg 3 (freezes text). 11.6s vs ~19.7s for 25 steps",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      5
+     ]
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.667,
+      0.4,
+      0
+     ],
+     "lora": 0.93
+    },
+    {
+     "model": "base",
+     "sigmas": [
+      0.25,
+      0.16,
+      0.08,
+      0
+     ],
+     "noise": true,
+     "cfg": 3
+    }
+   ]
+  },
+  {
+   "name": "Reference 25 steps (cfg 1 ×20, cfg 3 ×5)",
+   "note": "Reference: cfg 3 only on the last 5 steps keeps text sharp without burning glass/transparent materials",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      20
+     ]
+    },
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      20,
+      25
+     ],
+     "cfg": 3
+    }
+   ]
+  }
+ ]
+}

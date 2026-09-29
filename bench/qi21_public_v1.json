@@ -1,0 +1,140 @@
+{
+ "name": "qi21_public_v1",
+ "about": "Qwen Image 2.1 multi-stage bench: hand-written stress prompts — a vending machine (glass/transparent bottles, dense Japanese+English lettering) and a rainy Tokyo izakaya alley (lantern and sign lettering, rain reflections, a backlit figure) — fixed seeds and sizes. Reference = 25 steps (cfg 1 ×20, cfg 3 ×5).",
+ "comfy": "127.0.0.1:8188",
+ "fast_lora": "Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
+ "graph": {
+  "clip": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+    "type": "qwen_image",
+    "device": "default"
+   }
+  },
+  "enc": {
+   "class_type": "TextEncodeQwenImage21",
+   "inputs": {
+    "clip": [
+     "clip",
+     0
+    ],
+    "prompt": "{TEXT}",
+    "negative_prompt": "{NEG}",
+    "resolution": 1024
+   }
+  },
+  "model": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   }
+  },
+  "vae": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+   }
+  },
+  "lat": {
+   "class_type": "EmptyLatentImage",
+   "inputs": {
+    "width": "{W}",
+    "height": "{H}",
+    "batch_size": 1
+   }
+  }
+ },
+ "positive": [
+  "enc",
+  0
+ ],
+ "negative": [
+  "enc",
+  1
+ ],
+ "reference": {
+  "name": "Reference 25 steps (cfg 1 ×20, cfg 3 ×5)",
+  "stages": [
+   {
+    "model": "base",
+    "scheduler": "simple",
+    "steps": 25,
+    "range": [
+     0,
+     20
+    ]
+   },
+   {
+    "model": "base",
+    "scheduler": "simple",
+    "steps": 25,
+    "range": [
+     20,
+     25
+    ],
+    "cfg": 3
+   }
+  ]
+ },
+ "tiers": [
+  {
+   "name": "快",
+   "max_lpips": 0.08,
+   "max_worst": 0.15
+  },
+  {
+   "name": "平衡",
+   "max_lpips": 0.065,
+   "max_worst": 0.12
+  },
+  {
+   "name": "精",
+   "max_lpips": 0.055,
+   "max_worst": 0.1
+  }
+ ],
+ "sharp_range": [
+  0.9,
+  1.15
+ ],
+ "samples": [
+  {
+   "id": "p00",
+   "label": "vending machine (glass + dense JP/EN text) seed 51",
+   "text": "A vertical realistic night photograph of a glowing Japanese vending machine standing alone on a quiet Tokyo street corner, its cool white fluorescent light spilling onto wet asphalt. The machine is painted glossy red with a slightly scratched metal frame. Across the top of the machine, a wide illuminated header panel reads \"COLD DRINKS\" in bold white sans-serif letters, and directly below it a smaller blue band reads \"つめた〜い\" on the left half and \"あったか〜い\" in red on the right half. Behind a large clear glass front panel, three rows of drink samples stand side by side, the glass reflecting faint streetlights and a few raindrops. The top row holds six clear plastic PET bottles: a green tea bottle labeled \"緑茶\" with \"GREEN TEA\" underneath, a clear water bottle labeled \"天然水\" and \"MINERAL WATER\", a pale yellow bottle labeled \"レモンソーダ\" and \"LEMON SODA\", a brown bottle labeled \"麦茶\", a transparent sparkling water bottle labeled \"SPARKLING WATER\", and an orange juice bottle labeled \"オレンジ 100%\". The middle row holds six aluminium cans: a black coffee can labeled \"ブラックコーヒー\" and \"BLACK COFFEE\", a white can labeled \"ミルクティー\" and \"MILK TEA\", a red cola can labeled \"COLA\", a blue can labeled \"SPORTS DRINK\", a green can labeled \"抹茶ラテ\", and a gold can labeled \"CAFE LATTE\". The bottom row holds four small clear glass bottles of ramune and milk, labeled \"ラムネ\", \"牛乳\", \"コーンスープ\" and \"ココア\". Beneath every sample is a small white price tag with a lit button: \"¥130\", \"¥110\", \"¥150\", \"¥160\" and \"¥180\", some buttons glowing \"売切\" in red. On the lower right of the machine a coin slot is labeled \"100円 50円 10円\" and a card reader panel reads \"IC CARD OK\". A dark gray recycling bin beside the machine is labeled \"空き缶・ペットボトル\" and \"CANS & BOTTLES\". The lighting is the machine's own bright cold glow, with soft reflections on the glass and wet ground; the surrounding street is dim and blue. The overall composition is centered and frontal, crisp and detailed, every label clearly legible.",
+   "negative": "",
+   "width": 832,
+   "height": 1248,
+   "seed": 51
+  },
+  {
+   "id": "p01",
+   "label": "vending machine (glass + dense JP/EN text) seed 52",
+   "text": "A vertical realistic night photograph of a glowing Japanese vending machine standing alone on a quiet Tokyo street corner, its cool white fluorescent light spilling onto wet asphalt. The machine is painted glossy red with a slightly scratched metal frame. Across the top of the machine, a wide illuminated header panel reads \"COLD DRINKS\" in bold white sans-serif letters, and directly below it a smaller blue band reads \"つめた〜い\" on the left half and \"あったか〜い\" in red on the right half. Behind a large clear glass front panel, three rows of drink samples stand side by side, the glass reflecting faint streetlights and a few raindrops. The top row holds six clear plastic PET bottles: a green tea bottle labeled \"緑茶\" with \"GREEN TEA\" underneath, a clear water bottle labeled \"天然水\" and \"MINERAL WATER\", a pale yellow bottle labeled \"レモンソーダ\" and \"LEMON SODA\", a brown bottle labeled \"麦茶\", a transparent sparkling water bottle labeled \"SPARKLING WATER\", and an orange juice bottle labeled \"オレンジ 100%\". The middle row holds six aluminium cans: a black coffee can labeled \"ブラックコーヒー\" and \"BLACK COFFEE\", a white can labeled \"ミルクティー\" and \"MILK TEA\", a red cola can labeled \"COLA\", a blue can labeled \"SPORTS DRINK\", a green can labeled \"抹茶ラテ\", and a gold can labeled \"CAFE LATTE\". The bottom row holds four small clear glass bottles of ramune and milk, labeled \"ラムネ\", \"牛乳\", \"コーンスープ\" and \"ココア\". Beneath every sample is a small white price tag with a lit button: \"¥130\", \"¥110\", \"¥150\", \"¥160\" and \"¥180\", some buttons glowing \"売切\" in red. On the lower right of the machine a coin slot is labeled \"100円 50円 10円\" and a card reader panel reads \"IC CARD OK\". A dark gray recycling bin beside the machine is labeled \"空き缶・ペットボトル\" and \"CANS & BOTTLES\". The lighting is the machine's own bright cold glow, with soft reflections on the glass and wet ground; the surrounding street is dim and blue. The overall composition is centered and frontal, crisp and detailed, every label clearly legible.",
+   "negative": "",
+   "width": 832,
+   "height": 1248,
+   "seed": 52
+  },
+  {
+   "id": "p02",
+   "label": "Tokyo rainy izakaya: lanterns, signboards, chalkboard menu, backlit passer-by seed 71",
+   "text": "A vertical realistic night photograph of a narrow Tokyo back alley in the rain, looking toward the entrance of a small traditional izakaya. On the left, a row of four glowing red paper lanterns hangs from the eaves, each painted with large black brush-stroke characters: the nearest reads \"居酒屋\", the next \"焼き鳥\", then \"酒\", then \"おでん\". Above the sliding wooden door hangs a dark indigo noren curtain split into three panels printed with white characters reading \"とりまる\". A backlit vertical signboard on the right wall glows warm white with bold black gothic letters reading \"炭火焼鳥 とりまる\" and a smaller line below reading \"OPEN 17:00-24:00\". In the lower left, a small black chalkboard A-frame stands on the wet pavement, hand-written in white chalk: \"本日のおすすめ\" on the top line, then \"生ビール ¥500\" and \"焼き鳥盛り合わせ ¥980\", with a small drawing of a beer mug. Rain falls in fine silver streaks through the lantern light, and the wet asphalt mirrors the red lanterns and the white sign in long rippling reflections. Far down the alley, a motorcycle approaches with its single headlight glaring straight toward the camera, backlighting a lone passer-by in a dark coat holding a clear plastic umbrella, whose silhouette and umbrella edge are rimmed by the headlight glow; the headlight blooms softly in the rainy air. Tangled overhead power lines, air-conditioner units and a stack of beer crates line the walls. The lighting is warm red and amber from the lanterns against the cold blue of the night and the white backlight from the motorcycle. The overall composition is a deep one-point perspective down the alley, moody, cinematic and rain-soaked, every large sign clearly legible.",
+   "negative": "",
+   "width": 832,
+   "height": 1248,
+   "seed": 71
+  },
+  {
+   "id": "p03",
+   "label": "Tokyo rainy izakaya seed 72",
+   "text": "A vertical realistic night photograph of a narrow Tokyo back alley in the rain, looking toward the entrance of a small traditional izakaya. On the left, a row of four glowing red paper lanterns hangs from the eaves, each painted with large black brush-stroke characters: the nearest reads \"居酒屋\", the next \"焼き鳥\", then \"酒\", then \"おでん\". Above the sliding wooden door hangs a dark indigo noren curtain split into three panels printed with white characters reading \"とりまる\". A backlit vertical signboard on the right wall glows warm white with bold black gothic letters reading \"炭火焼鳥 とりまる\" and a smaller line below reading \"OPEN 17:00-24:00\". In the lower left, a small black chalkboard A-frame stands on the wet pavement, hand-written in white chalk: \"本日のおすすめ\" on the top line, then \"生ビール ¥500\" and \"焼き鳥盛り合わせ ¥980\", with a small drawing of a beer mug. Rain falls in fine silver streaks through the lantern light, and the wet asphalt mirrors the red lanterns and the white sign in long rippling reflections. Far down the alley, a motorcycle approaches with its single headlight glaring straight toward the camera, backlighting a lone passer-by in a dark coat holding a clear plastic umbrella, whose silhouette and umbrella edge are rimmed by the headlight glow; the headlight blooms softly in the rainy air. Tangled overhead power lines, air-conditioner units and a stack of beer crates line the walls. The lighting is warm red and amber from the lanterns against the cold blue of the night and the white backlight from the motorcycle. The overall composition is a deep one-point perspective down the alley, moody, cinematic and rain-soaked, every large sign clearly legible.",
+   "negative": "",
+   "width": 832,
+   "height": 1248,
+   "seed": 72
+  }
+ ]
+}

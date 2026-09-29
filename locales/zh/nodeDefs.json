@@ -1,0 +1,56 @@
+{
+ "MultiStageSampler": {
+  "display_name": "多段采样 Multi-Stage Sampler",
+  "inputs": {
+   "model": {
+    "name": "模型",
+    "tooltip": "原模型(前面可以先接你的 LoRA Loader)"
+   },
+   "positive": {
+    "name": "正向"
+   },
+   "latent_image": {
+    "name": "latent"
+   },
+   "seed": {
+    "name": "seed"
+   },
+   "fast_lora": {
+    "name": "fast LoRA",
+    "tooltip": "fast / turbo LoRA,只挂在 fast 段"
+   },
+   "preset": {
+    "name": "配方",
+    "tooltip": "配方库:ComfyUI/user/multistage_recipes.json(default = 默认)"
+   },
+   "recipe": {
+    "name": "自定义配方",
+    "tooltip": "配方选 custom 时使用:粘贴 JSON 配方 {\"name\":…,\"stages\":[…]}"
+   },
+   "negative": {
+    "name": "负向",
+    "tooltip": "有 cfg>1 的段才需要"
+   },
+   "lora_stack": {
+    "name": "LoRA 堆叠",
+    "tooltip": "风格/人物 LoRA [(名称, model 强度, clip 强度)];每段 \"styles\" 倍率(0 = 不挂)"
+   }
+  },
+  "outputs": {
+   "0": {
+    "name": "latent"
+   },
+   "1": {
+    "name": "信息"
+   }
+  }
+ },
+ "MultiStageLoraStack": {
+  "display_name": "多段采样 LoRA 堆叠",
+  "outputs": {
+   "0": {
+    "name": "LoRA 堆叠"
+   }
+  }
+ }
+}
