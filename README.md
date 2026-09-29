@@ -56,8 +56,9 @@ model files + the [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/
 
 Recipes **Z-Image · sketch 1 + turbo 8** (best) and **sketch 1 + turbo 6** (faster): a *sketch* model on `model` draws
 only the first step (σ 1→0.9, cfg 1) to fix the composition, then Turbo on `fast_model` finishes. The sketch model is
-Z-Image base with the Distill 4-step LoRA merged at 0.8 — load base + that LoRA at strength 0.8 (our own build is the
-same merge quantized to a 3 GB Q2 GGUF, not published). 7.5 s / 6.6 s per image on an RTX 5060 Ti; below 8 Turbo steps
+Z-Image base with the Distill 4-step LoRA merged at 0.8, quantized to a layer-aware 3 GB Q2 GGUF — **download it
+from [pottokao/Z-Image-Sketch-Q2_K-GGUF](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF)** (sketch use only; load with `UnetLoaderGGUF`). Or load base + that LoRA at
+strength 0.8. Example: `examples/z_image_sketch_turbo_multistage.json`. 7.5 s / 6.6 s per image on an RTX 5060 Ti; below 8 Turbo steps
 fine details (fingers, smoke) start to break.
 
 ## Recipe (JSON)
