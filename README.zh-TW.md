@@ -42,6 +42,10 @@ fast 那段如果是**另一顆模型**(Z-Image Turbo)而不是 LoRA,把它接�
 配方 **Z-Image · base 2 + turbo 10**:base(+ Distill 8 步 LoRA 0.8)走 12 步 res_multistep 的前 2 步定構圖,Turbo 收後 10 步——跟兩個 KSamplerAdvanced 串接逐像素相同。
 範例:`examples/z_image_base_turbo_multistage.json`(官方 Z-Image / Turbo 模型檔 + [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/Z-Image-Fun-Lora-Distill))。
 
+配方 **Z-Image · sketch 1 + turbo 8**(最佳)與 **sketch 1 + turbo 6**(快速版):`model` 接「底稿」模型只畫第一步(σ 1→0.9,cfg 1)定構圖,再由 `fast_model` 的 Turbo 收尾。
+底稿模型 = Z-Image base 合併 Distill 4 步 LoRA ×0.8——直接載 base + 這顆 LoRA 強度 0.8 即可(我們自用的是同一個合併再量化成 3 GB 的 Q2 GGUF,未公開)。
+RTX 5060 Ti 每張 7.5 秒 / 6.6 秒;Turbo 少於 8 步,手指、菸這類細節開始出錯。
+
 ## 配方(JSON)
 
 ```json

@@ -54,6 +54,12 @@ the base model (+ Distill 8-step LoRA 0.8) draws 2 of 12 res_multistep steps, Tu
 chained KSamplerAdvanced nodes. Example: `examples/z_image_base_turbo_multistage.json` (official Z-Image / Z-Image Turbo
 model files + the [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/Z-Image-Fun-Lora-Distill)).
 
+Recipes **Z-Image · sketch 1 + turbo 8** (best) and **sketch 1 + turbo 6** (faster): a *sketch* model on `model` draws
+only the first step (σ 1→0.9, cfg 1) to fix the composition, then Turbo on `fast_model` finishes. The sketch model is
+Z-Image base with the Distill 4-step LoRA merged at 0.8 — load base + that LoRA at strength 0.8 (our own build is the
+same merge quantized to a 3 GB Q2 GGUF, not published). 7.5 s / 6.6 s per image on an RTX 5060 Ti; below 8 Turbo steps
+fine details (fingers, smoke) start to break.
+
 ## Recipe (JSON)
 
 ```json

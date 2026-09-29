@@ -196,6 +196,62 @@
      "sampler": "res_multistep"
     }
    ]
+  },
+  {
+   "name": "Z-Image · sketch 1 + turbo 6",
+   "note": "Sketch DiT (Z-Image base + Distill 4-step LoRA 0.8 merged, Q2 GGUF 2.98G) on model draws 1 step (σ 1→0.9, cfg 1) and fixes the composition; Z-Image Turbo on fast_model finishes 6 steps. 6.6s on RTX 5060 Ti.",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 4,
+     "range": [
+      0,
+      1
+     ],
+     "sampler": "euler"
+    },
+    {
+     "model": "fast",
+     "scheduler": "simple",
+     "steps": 8,
+     "range": [
+      2,
+      8
+     ],
+     "sampler": "res_multistep"
+    }
+   ]
+  },
+  {
+   "name": "Z-Image · sketch 1 + turbo 8",
+   "note": "Sketch DiT on model draws 1 step (σ 1→0.9, cfg 1) to fix the composition; Z-Image Turbo on fast_model walks 8 steps from σ 0.9 along the shift-3 curve. Best of a sweep over 4–10 Turbo steps and handoff σ 0.833/0.9/0.955. 7.5 s on RTX 5060 Ti.",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 4,
+     "range": [
+      0,
+      1
+     ],
+     "sampler": "euler"
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.8514,
+      0.7941,
+      0.7258,
+      0.6429,
+      0.54,
+      0.4091,
+      0.2368,
+      0.0
+     ],
+     "sampler": "res_multistep"
+    }
+   ]
   }
  ]
 }
