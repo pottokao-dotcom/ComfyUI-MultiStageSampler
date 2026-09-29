@@ -170,6 +170,32 @@
      "cfg": 3
     }
    ]
+  },
+  {
+   "name": "Z-Image · base 2 + turbo 10",
+   "note": "Z-Image base (+Distill 8-step LoRA 0.8) → Z-Image Turbo on fast_model: 12 steps res_multistep, base draws 2. Pixel-identical to two chained KSamplerAdvanced; 8.7s on RTX 5060 Ti (NVFP4)",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 12,
+     "range": [
+      0,
+      2
+     ],
+     "sampler": "res_multistep"
+    },
+    {
+     "model": "fast",
+     "scheduler": "simple",
+     "steps": 12,
+     "range": [
+      2,
+      12
+     ],
+     "sampler": "res_multistep"
+    }
+   ]
   }
  ]
 }

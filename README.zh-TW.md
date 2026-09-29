@@ -36,6 +36,12 @@ git clone https://github.com/pottokao-dotcom/ComfyUI-MultiStageSampler
 
 範例:`examples/qwen_image_2_1_t2i_multistage.json` = ComfyUI 官方「Qwen Image 2.1 文生圖」範本,KSampler 換成本節點(含模型下載連結)。
 
+## Z-Image base + Turbo(兩顆模型)
+
+fast 那段如果是**另一顆模型**(Z-Image Turbo)而不是 LoRA,把它接到選接的 `fast_model` 輸入,fast 段就改用它(`fast_lora` 可以選 none,也可以再疊一個)。
+配方 **Z-Image · base 2 + turbo 10**:base(+ Distill 8 步 LoRA 0.8)走 12 步 res_multistep 的前 2 步定構圖,Turbo 收後 10 步——跟兩個 KSamplerAdvanced 串接逐像素相同。
+範例:`examples/z_image_base_turbo_multistage.json`(官方 Z-Image / Turbo 模型檔 + [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/Z-Image-Fun-Lora-Distill))。
+
 ## 配方(JSON)
 
 ```json

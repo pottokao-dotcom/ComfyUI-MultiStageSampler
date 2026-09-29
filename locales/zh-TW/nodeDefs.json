@@ -34,6 +34,10 @@
    "lora_stack": {
     "name": "LoRA 堆疊",
     "tooltip": "風格/人物 LoRA [(名稱, model 強度, clip 強度)];每段 \"styles\" 倍率(0 = 不掛)"
+   },
+   "fast_model": {
+    "name": "fast 模型",
+    "tooltip": "另一顆 fast/turbo 模型(例如 Z-Image Turbo):fast 段改用它,這時 fast LoRA 可選 none"
    }
   },
   "outputs": {

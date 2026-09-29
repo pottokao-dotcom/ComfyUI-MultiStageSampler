@@ -96,6 +96,7 @@ class MultiStageSampler:
                 "optional": {
                     "negative": ("CONDITIONING", {"tooltip": "Only needed by stages with cfg > 1"}),
                     "lora_stack": ("LORA_STACK", {"tooltip": "Style / character LoRAs [(name, model strength, clip strength)]; per-stage \"styles\" multiplier (0 = off)"}),
+                    "fast_model": ("MODEL", {"tooltip": "Separate fast/turbo model (e.g. Z-Image Turbo): fast stages use it instead of model; fast_lora is optional then"}),
                 }}
 
     RETURN_TYPES = ("LATENT", "STRING")
@@ -107,7 +108,7 @@ class MultiStageSampler:
     def IS_CHANGED(cls, **kw):
         return open(presets_path(), encoding="utf-8").read() if kw.get("preset") != CUSTOM else ""
 
-    def run(self, model, positive, latent_image, seed, fast_lora, preset, recipe, negative=None, lora_stack=None):
+    def run(self, model, positive, latent_image, seed, fast_lora, preset, recipe, negative=None, lora_stack=None, fast_model=None):
         if preset in CUSTOM_LEGACY:
             preset = CUSTOM
         if preset != CUSTOM:
@@ -116,8 +117,8 @@ class MultiStageSampler:
                 raise ValueError("preset \"%s\" not found in %s" % (preset, presets_path()))
             recipe = names[preset]
         stages = parse(recipe)
-        if any(s["model"] == "fast" for s in stages) and fast_lora == "none":
-            raise ValueError("recipe has fast stages but fast_lora is none")
+        if any(s["model"] == "fast" for s in stages) and fast_lora == "none" and fast_model is None:
+            raise ValueError("recipe has fast stages: pick a fast_lora or connect fast_model")
         if any(s["cfg"] > 1 for s in stages) and negative is None:
             raise ValueError("recipe has a stage with cfg > 1: connect negative")
 
@@ -128,10 +129,14 @@ class MultiStageSampler:
             key = (st["model"], st["lora"] if st["model"] == "fast" else None, st["styles"])
             if key not in cache:
                 sc = st["styles"]
-                if sc not in styled:
-                    styled[sc] = with_stack(model, lora_stack, sc) if (lora_stack and sc != 0) else model
-                m = styled[sc]
-                cache[key] = with_fast_lora(m, fast_lora, st["lora"]) if st["model"] == "fast" else (m, "")
+                src = fast_model if (st["model"] == "fast" and fast_model is not None) else model
+                if (id(src), sc) not in styled:
+                    styled[(id(src), sc)] = with_stack(src, lora_stack, sc) if (lora_stack and sc != 0) else src
+                m = styled[(id(src), sc)]
+                if st["model"] == "fast" and fast_lora != "none":
+                    cache[key] = with_fast_lora(m, fast_lora, st["lora"])
+                else:
+                    cache[key] = (m, "fast_model" if src is fast_model and st["model"] == "fast" else "")
             return cache[key]
 
         latent = latent_image.copy()
@@ -170,7 +175,7 @@ class MultiStageSampler:
             cur = float(sig[-1])
             info.append("%d. %s %d steps σ %.3f→%.3f%s%s%s  %.2fs" % (
                 i + 1, st["model"], len(sig) - 1, float(sig[0]), cur,
-                (" lora %.2f(%s)" % (st["lora"], how)) if st["model"] == "fast" else "",
+                ((" lora %.2f(%s)" % (st["lora"], how)) if how not in ("", "fast_model") else (" (fast_model)" if how == "fast_model" else "")) if st["model"] == "fast" else "",
                 ((" cfg %.1f" % st["cfg"]) if st["cfg"] > 1 else "") + (" +noise" if st.get("noise") else ""),
                 ("" if not lora_stack else (" styles off" if st["styles"] == 0 else ("" if st["styles"] == 1 else " styles ×%g" % st["styles"]))),
                 time.time() - t0))

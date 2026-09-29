@@ -46,6 +46,14 @@ No extra Python packages. For Qwen Image 2.1 + Viggle turbo also get:
 Example workflow: `examples/qwen_image_2_1_t2i_multistage.json` — the official *Qwen Image 2.1 text to image*
 template with its KSampler replaced by this node (model download links included).
 
+## Z-Image base + Turbo (two models)
+
+When the fast part is a **separate model** (Z-Image Turbo) instead of a LoRA, connect it to the optional `fast_model`
+input; `fast` stages then use it (`fast_lora` can stay `none`, or add one on top). Recipe **Z-Image · base 2 + turbo 10**:
+the base model (+ Distill 8-step LoRA 0.8) draws 2 of 12 res_multistep steps, Turbo finishes — pixel-identical to two
+chained KSamplerAdvanced nodes. Example: `examples/z_image_base_turbo_multistage.json` (official Z-Image / Z-Image Turbo
+model files + the [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/Z-Image-Fun-Lora-Distill)).
+
 ## Recipe (JSON)
 
 ```json
@@ -55,7 +63,7 @@ template with its KSampler replaced by this node (model download links included)
 ]}
 ```
 Each stage:
-- `"model"`: `base` or `fast` (fast = base + the node's `fast_lora`).
+- `"model"`: `base` or `fast` (fast = base + the node's `fast_lora`, or the `fast_model` input if connected).
 - either `"scheduler"` + `"steps"` + `"range": [a, b]` — copy steps a…b of that schedule (the same path a KSampler takes),
 - or `"sigmas": [...]` — continue from where the previous stage ended to these σ.
 - optional `"lora"` (fast stages, default 1), `"cfg"` (> 1 uses the negative, default 1), `"sampler"` (default `euler`),
