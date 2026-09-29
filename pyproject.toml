@@ -2,7 +2,7 @@
 name = "comfyui-multistage-sampler"
 description = "One node for multi-stage sampling: base-model steps, fast/turbo-LoRA steps and renoise refine in a single JSON recipe, with an in-node editor and a bench tool that measures recipes against a reference."
 version = "0.1.0"
-license = { file = "LICENSE" }
+license = { text = "Apache-2.0" }
 dependencies = []
 
 [project.urls]

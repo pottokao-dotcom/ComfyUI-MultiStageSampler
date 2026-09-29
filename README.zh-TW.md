@@ -63,3 +63,6 @@ git clone https://github.com/pottokao-dotcom/ComfyUI-MultiStageSampler
 
 ## Bench(自動評估、自動挑配方)
 見英文 README 的 Bench 一節;指令、指標、實驗結論相同。
+
+## 授權
+Apache-2.0

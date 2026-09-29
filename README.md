@@ -104,3 +104,6 @@ Notes from the Qwen Image 2.1 runs:
 
 ## Languages
 [繁體中文說明](README.zh-TW.md)
+
+## License
+Apache-2.0

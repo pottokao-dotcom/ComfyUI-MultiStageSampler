@@ -1,6 +1,6 @@
 {
  "name": "qi21_public_v1",
- "about": "Qwen Image 2.1 multi-stage bench: hand-written stress prompts — a vending machine (glass/transparent bottles, dense Japanese+English lettering) and a rainy Tokyo izakaya alley (lantern and sign lettering, rain reflections, a backlit figure) — fixed seeds and sizes. Reference = 25 steps (cfg 1 ×20, cfg 3 ×5).",
+ "about": "Qwen Image 2.1 multi-stage bench: hand-written stress prompts — a vending machine (glass/transparent bottles, dense Japanese+English lettering) and a rainy Tokyo izakaya alley (lantern and sign lettering, rain reflections, a backlit figure) — and an ukiyo-e woodblock wave whose fine foam is very sensitive to the hand-off σ — fixed seeds and sizes. Reference = 25 steps (cfg 1 ×20, cfg 3 ×5).",
  "comfy": "127.0.0.1:8188",
  "fast_lora": "Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
  "graph": {
@@ -135,6 +135,15 @@
    "width": 832,
    "height": 1248,
    "seed": 72
+  },
+  {
+   "id": "p04",
+   "label": "ukiyo-e woodblock: Taipei 101 behind a great wave (fine foam = hand-off σ probe) seed 36",
+   "text": "A horizontal Japanese ukiyo-e woodblock print in the style of Hokusai, showing Taipei 101 rising behind an enormous breaking wave. In the foreground, a colossal Prussian-blue wave curls from the left across the frame, its crest breaking into claw-like white foam fingers that spray tiny droplets over the sea; smaller waves ripple below with fine parallel carved lines and white foam dots. In the middle distance, the tower of Taipei 101 stands slightly left of center, drawn as a stack of eight flared pagoda-like segments in muted green-grey and ochre with crisp black keyblock outlines, its spire piercing a pale sky. Three narrow wooden fishing boats with crouching rowers in straw hats ride the troughs of the waves at lower right, tilted steeply. A pale beige sky with soft horizontal bokashi gradation fades to a light blue band near the horizon, and a few stylised flat clouds float at upper right. In the upper left corner, a vertical rectangular cartouche in light yellow holds black brush calligraphy reading \"台北百一 波裏\" with a small red square seal below it. The palette is limited to Prussian blue, indigo, ochre, grey-green, beige and white, printed with visible wood grain texture and slightly uneven ink density on washi paper. The lighting is flat and even, as in a woodblock print, with no cast shadows. The overall composition is dynamic and asymmetrical, the wave framing the tower, calm and classical in mood.",
+   "negative": "",
+   "width": 1248,
+   "height": 832,
+   "seed": 36
   }
  ]
 }
