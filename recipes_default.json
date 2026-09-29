@@ -109,6 +109,44 @@
    ]
   },
   {
+   "name": "Text+ · balanced + heavy refine (.5, cfg 3)",
+   "note": "For tiny hand-written / cursive lettering: balanced, then renoise to σ 0.5 and redraw with 6 base steps at cfg 3. ~14.8s vs ~18.9s for 25 steps; recovers small cursive the Text recipe cannot",
+   "stages": [
+    {
+     "model": "base",
+     "scheduler": "simple",
+     "steps": 25,
+     "range": [
+      0,
+      5
+     ]
+    },
+    {
+     "model": "fast",
+     "sigmas": [
+      0.667,
+      0.4,
+      0
+     ],
+     "lora": 0.93
+    },
+    {
+     "model": "base",
+     "sigmas": [
+      0.5,
+      0.4,
+      0.3,
+      0.2,
+      0.1,
+      0.05,
+      0
+     ],
+     "noise": true,
+     "cfg": 3
+    }
+   ]
+  },
+  {
    "name": "Reference 25 steps (cfg 1 ×20, cfg 3 ×5)",
    "note": "Reference: cfg 3 only on the last 5 steps keeps text sharp without burning glass/transparent materials",
    "stages": [

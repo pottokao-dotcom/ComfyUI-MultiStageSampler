@@ -24,6 +24,7 @@ composition of the 25-step image, and the fast LoRA then finishes in 3 steps:
 | **Balanced** · copy 5 + fast 3 | 7.7 s | 0.058 / 0.096 |
 | **Fine** · copy 6 + fast 3 | 8.5 s | 0.049 / 0.092 |
 | **Text** · balanced + renoise refine (σ 0.25, cfg 3) | 11.6 s | best small lettering |
+| **Text+** · balanced + heavy refine (σ 0.5, 6 steps, cfg 3) | 14.8 s | tiny hand-written / cursive lettering |
 
 Measured with the bench tool below on 14 prompts; lower LPIPS = closer to the 25-step image.
 
