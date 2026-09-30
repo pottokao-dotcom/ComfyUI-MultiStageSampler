@@ -56,10 +56,35 @@ model files + the [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/
 
 Recipes **Z-Image · sketch 1 + turbo 8** (best) and **sketch 1 + turbo 6** (faster): a *sketch* model on `model` draws
 only the first step (σ 1→0.9, cfg 1) to fix the composition, then Turbo on `fast_model` finishes. The sketch model is
-Z-Image base with the Distill 4-step LoRA merged at 0.8, quantized to a layer-aware 3 GB Q2 GGUF — **download it
+Z-Image base with the Distill 4-step LoRA merged at 0.8, quantized to a layer-aware Q2 GGUF (3.17 GB `Q2_K_Uc`, colour-protected, recommended) — **download it
 from [pottokao/Z-Image-Sketch-Q2_K-GGUF](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF)** (sketch use only; load with `UnetLoaderGGUF`). Or load base + that LoRA at
 strength 0.8. Example: `examples/z_image_sketch_turbo_multistage.json`. 7.5 s / 6.6 s per image on an RTX 5060 Ti; below 8 Turbo steps
 fine details (fingers, smoke) start to break.
+
+### How much composition does the sketch buy?
+
+Pure placement instructions only (no aesthetics): 9 prompts × 4 seeds that say *where* things go; OWLv2 checks whether the subject lands
+in the requested region. Time = **warm DiT time only** (models on the GPU; no text encoder / VAE), as a multiple of Turbo 8 steps —
+GPUs differ, the ratio carries over (Turbo 8 = 4.8 s on an RTX 5060 Ti, 1024²).
+
+| recipe | extra DiT weights | DiT time | placement hits |
+|---|---|---|---|
+| Z-Image Turbo 8 steps | – | 1.00× | 30 / 36 |
+| **sketch `Q2_K_Uc` 1 step + Turbo 6** | **+3.17 GB** | **1.09×** | **32 / 36** |
+| sketch `Q2_K_Uc` 2 steps + Turbo 4 | +3.17 GB | 1.19× | 33 / 36 |
+| base NVFP4 + Distill-4 LoRA 2 steps + Turbo 4 | +9.5 GB | 0.90× | 32 / 36 |
+| Z-Image base alone, 25 steps cfg 4 | (8.9 GB) | 9.8× | 33 / 36 |
+
+The gap is in **people**: Turbo's own framing overrides the instruction. *"Top-down, a woman lying on her back, legs toward the upper-right
+corner, arms toward the lower-left"* — Turbo (top) vs one sketch step (bottom):
+
+![lying on the floor: Turbo vs sketch](docs/composition_lying.jpg)
+
+For objects (a dog at the left edge, a boat under a low horizon) both get the placement; the sketch changes the details (a far richer sky).
+Turbo's own crop often *looks* nicer — the sketch buys obedience, not taste. More examples on the
+[model page](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF). On an FP4 GPU the unquantized NVFP4 base is faster per step than
+the Q2 GGUF; the Q2 sketch is for saving VRAM. That is the point of a recipe: spend a little weight to buy speed and quality, and tune the
+hand-off σ, step counts and last-step sampler in the node without rewiring.
 
 ## Recipe (JSON)
 

@@ -43,8 +43,29 @@ fast 那段如果是**另一顆模型**(Z-Image Turbo)而不是 LoRA,把它接�
 範例:`examples/z_image_base_turbo_multistage.json`(官方 Z-Image / Turbo 模型檔 + [alibaba-pai Distill LoRA](https://huggingface.co/alibaba-pai/Z-Image-Fun-Lora-Distill))。
 
 配方 **Z-Image · sketch 1 + turbo 8**(最佳)與 **sketch 1 + turbo 6**(快速版):`model` 接「底稿」模型只畫第一步(σ 1→0.9,cfg 1)定構圖,再由 `fast_model` 的 Turbo 收尾。
-底稿模型 = Z-Image base 合併 Distill 4 步 LoRA ×0.8,分層量化成 3 GB 的 Q2 GGUF——**在 [pottokao/Z-Image-Sketch-Q2_K-GGUF](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF) 下載**(只給打草稿用,用 `UnetLoaderGGUF` 載入);也可以直接載 base + 這顆 LoRA 強度 0.8。範例:`examples/z_image_sketch_turbo_multistage.json`。
+底稿模型 = Z-Image base 合併 Distill 4 步 LoRA ×0.8,分層量化成 Q2 GGUF(推薦顏色保護版 `Q2_K_Uc`,3.17 GB)——**在 [pottokao/Z-Image-Sketch-Q2_K-GGUF](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF) 下載**(只給打草稿用,用 `UnetLoaderGGUF` 載入);也可以直接載 base + 這顆 LoRA 強度 0.8。範例:`examples/z_image_sketch_turbo_multistage.json`。
 RTX 5060 Ti 每張 7.5 秒 / 6.6 秒;Turbo 少於 8 步,手指、菸這類細節開始出錯。
+
+### 底稿能買到多少構圖?
+
+只測純擺位指令(不談美學):9 題 × 4 seed,題目寫明東西放哪裡,OWLv2 判主體有沒有落在指定區域。時間 = **只算熱的 DiT**(模型已在顯存、不含文字編碼/VAE),
+用 Turbo 8 步的倍數表示——每張卡不同,看比例(RTX 5060 Ti 1024² 的 Turbo 8 = 4.8 秒)。
+
+| 配方 | 多載的 DiT 權重 | DiT 時間 | 擺位命中 |
+|---|---|---|---|
+| Z-Image Turbo 8 步 | – | 1.00× | 30 / 36 |
+| **底稿 `Q2_K_Uc` 1 步 + Turbo 6** | **+3.17 GB** | **1.09×** | **32 / 36** |
+| 底稿 `Q2_K_Uc` 2 步 + Turbo 4 | +3.17 GB | 1.19× | 33 / 36 |
+| base NVFP4 + Distill-4 LoRA 2 步 + Turbo 4 | +9.5 GB | 0.90× | 32 / 36 |
+| 純 Z-Image base 25 步 cfg 4 | (8.9 GB) | 9.8× | 33 / 36 |
+
+差在**人物**:Turbo 自己的構圖美感會蓋過指令。「俯拍、女生躺地板、腿往右上角、手往左下」——上排 Turbo、下排底稿 1 步:
+
+![躺地板:Turbo vs 底稿](docs/composition_lying.jpg)
+
+物件(狗貼左邊、船在低地平線)兩邊位置都對,底稿改變的是細節(天空雲層豐富很多)。Turbo 自己裁的構圖常常比較好看——底稿買的是「聽話」不是「美感」。
+更多範例在 [模型頁](https://huggingface.co/pottokao/Z-Image-Sketch-Q2_K-GGUF)。有 FP4 的卡上,沒壓 Q2 的 NVFP4 base 每步反而比 Q2 快,Q2 底稿是為了省顯存。
+這就是配方的用處:花一點權重買速度和品質,交棒點、步數、末段採樣器直接在節點裡微調,不用重接線。
 
 ## 配方(JSON)
 
